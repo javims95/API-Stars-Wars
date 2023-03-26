@@ -1,0 +1,121 @@
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Navbar */
+.navbar {
+    background-image: url(./assets/header-bg.jpg);
+    min-height: 500px;
+    background-size: cover;
+    background-position-y: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.navbar li a:hover:not(.active) {
+    background-color: #111;
+}
+
+/* Results */
+#results {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+#results .main-title {
+    margin: 24px 0;
+    text-align: center;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 1rem;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.card .card-title {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.card .card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+}
+
+.card .card-body .list {
+    display: block;
+}
+
+.card .card-body ul {
+    margin-left: 1rem;
+}
+
+.card .card-body ul li {
+    list-style: circle;
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+    max-width: 100px;
+    margin-top: 16px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0062cc;
+}

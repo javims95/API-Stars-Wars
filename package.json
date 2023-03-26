@@ -1,0 +1,23 @@
+{
+    "name": "api-stars-wars",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "serve"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/javims95/API-Stars-Wars.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/javims95/API-Stars-Wars/issues"
+    },
+    "homepage": "https://github.com/javims95/API-Stars-Wars#readme",
+    "devDependencies": {
+        "prettier": "2.8.7"
+    }
+}
