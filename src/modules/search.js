@@ -9,26 +9,31 @@ export const updateSearch = (name) => {
     input.dataset.name = name;
 }
 
-export const doSearch = (query) => {
+export const doSearch = async (query) => {
     if (query.length >= 3) {
         const name = input.getAttribute('data-name');
-        obtenerDatosDeAPI(`${name}/?search=${query}`).then((response) => {
-            const data = response.results
-            if(data.length) {
-                searchResults.style.display = 'block'
-                changeStyleSearch()
+        try {
+            const response = await obtenerDatosDeAPI(`${name}/?search=${query}`);
+            const data = response.results;
+            if (data.length) {
+                searchResults.style.display = 'block';
+                changeStyleSearch();
+                searchResultsList.innerHTML = '';
+                for (let i = 0; i < data.length; i++) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.textContent = data[i].name;
+                    a.href = data[i].url;
+                    li.appendChild(a);
+                    searchResultsList.appendChild(li);
+                }
             }
-            for (let i = 0; i < data.length; i++) {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.textContent = data[i].name;
-                a.href = data[i].url;
-                li.appendChild(a);
-                searchResultsList.appendChild(li);
-            }
-        })
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
+};
+
 
 const changeStyleSearch = () => {
     const button = document.getElementById('btnSearch');
@@ -42,5 +47,6 @@ const changeStyleSearch = () => {
         button.textContent = 'Search'
         button.classList.add('btn-primary')
         button.classList.remove('btn-danger')
+        input.value = ''
     })
 }

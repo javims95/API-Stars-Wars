@@ -13,6 +13,13 @@ import { randomNumber } from '../utils/functions.js'
  * @returns {Promise} Una promesa que devuelve los datos obtenidos de la API, o una promesa rechazada si la petición falla.
  */
 export async function obtenerDatosDeAPI(endpoint, error = false, lateRequest = false, probabilityFail = false) {
+    const cacheKey = endpoint;
+    const cachedData = localStorage.getItem(cacheKey);
+
+    if (cachedData) {
+        return JSON.parse(cachedData);
+    }
+
     if (error) {
         return Promise.reject(new Error('Petición fallida'))
     } else {
@@ -24,6 +31,8 @@ export async function obtenerDatosDeAPI(endpoint, error = false, lateRequest = f
         if (lateRequest && randomNumber(1, 20) === 1) {
             await new Promise((resolve) => setTimeout(resolve, 1000))
         }
+
+        localStorage.setItem(cacheKey, JSON.stringify(data));
         return data
     }
 }

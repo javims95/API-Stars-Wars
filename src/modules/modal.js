@@ -9,7 +9,6 @@ const showDataModal = (contenido) => {
     modal.style.display = 'flex'
     modalContent.innerHTML = contenido;
 
-    // revisar
     document.querySelectorAll("[data-action='changePage']").forEach((button) => {
         button.addEventListener('click', () => {
             const url = button.getAttribute('data-url');
@@ -35,6 +34,10 @@ export const getDataModal = async (endpoint) => {
                 continue
             }
             if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    delete page[key];
+                    continue;
+                }
                 content += `<li><strong>${capitalize(key)}:</strong> <div class="group-btn">`;
                 const dataPromises = value.map((item) => {
                     const url = item.split('/');
@@ -42,6 +45,7 @@ export const getDataModal = async (endpoint) => {
                 });
                 const allData = await Promise.all(dataPromises);
                 for (let data of allData) {
+                    // console.log(data);
                     const url = data.url.split('/');
                     content += `<button class="btn btn-primary" data-action="changePage" data-url="${url[4]}/${url[5]}">
                                     ${data.name || data.title}

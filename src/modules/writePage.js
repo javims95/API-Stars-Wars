@@ -45,11 +45,15 @@ export const getDataPage = async (pageName) => {
                     <h5 class="card-title">${property.name || property.title}</h5>            
                     <ul class="list-none">`
             for (let key in property) {
-                if (key === 'created' || key === 'edited' || key === 'url') {
+                if (key === 'homeworld' || key === 'created' || key === 'edited' || key === 'url') {
                     continue
                 }
                 if (Array.isArray(property[key])) {
-                    content += `<li><strong>${capitalize(key)}:</strong> <div class="group-btn">`;
+                    if (property[key].length === 0) {
+                        delete property[key];
+                        continue;
+                    }
+                    content += `<hr/><li><strong>${capitalize(key)}:</strong> <div class="group-btn">`;
                     const dataPromises = property[key].slice(0, 2).map((item) => {
                         const url = item.split("/");
                         return obtenerDatosDeAPI(`${url[4]}/${url[5]}`);
@@ -67,7 +71,7 @@ export const getDataPage = async (pageName) => {
                 }
             }
             const dataUrl = property.url.split('/');
-            content += `</ul>
+            content += `</ul><hr/>
                     <button class="btn btn-primary btn-block openModal" data-action="openModal" data-url="${dataUrl[4]}/${dataUrl[5]}">
                         Más detalles
                     </button>

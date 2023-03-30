@@ -21,7 +21,7 @@ hr {
     height: 0;
     margin: 1rem 0;
     overflow: hidden;
-    border-top: 1px solid #00000020;
+    border-top: 1px solid #0000001f;
 }
 
 /* Navbar */
@@ -33,6 +33,12 @@ hr {
     display: flex;
     justify-content: center;
     align-items: flex-end;
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        background-position-y: 590px;
+    }
 }
 
 .navbar ul {
@@ -77,7 +83,6 @@ hr {
 }
 
 .card {
-    /* position: relative; */
     display: flex;
     flex-direction: column;
     min-width: 0;
@@ -410,5 +415,6 @@ hr {
 }
 
 .search-results a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    background-color: #d5d5d5;
 }
