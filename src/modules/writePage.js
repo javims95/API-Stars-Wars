@@ -1,6 +1,7 @@
 import { obtenerDatosDeAPI } from "./api.js"
 import { capitalize } from "../utils/functions.js"
 import { getDataModal, hideModal } from "./modal.js"
+import { doSearch, updateSearch } from "./search.js"
 
 const showDataPage = (contenido) => {
     const resultados = document.getElementById('results')
@@ -13,8 +14,7 @@ const showDataPage = (contenido) => {
             getDataModal(url);
         })
     })
-    const closeModal = document.getElementById('closeModal');
-    closeModal.addEventListener('click', () => {
+    document.getElementById('closeModal').addEventListener('click', () => {
         hideModal()
     })
     document.querySelectorAll("[data-action='changePage']").forEach((button) => {
@@ -26,6 +26,12 @@ const showDataPage = (contenido) => {
             )
         })
     })
+
+    const inputSearch = document.getElementById('searchInput');
+    inputSearch.addEventListener('input', () => {
+        doSearch(inputSearch.value)
+    });
+
 }
 
 export const getDataPage = async (pageName) => {
@@ -68,8 +74,10 @@ export const getDataPage = async (pageName) => {
                 </div>
             </div>`
         }
-        content += '</div>'
+        content += '</div>';
+        updateSearch(pageName)
         showDataPage(content)
+
     } catch (error) {
         console.error(error)
     }

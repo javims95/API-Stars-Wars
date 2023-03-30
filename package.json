@@ -4,7 +4,9 @@
     "type": "module",
     "description": "",
     "main": "index.js",
-    "scripts": {},
+    "scripts": {
+        "serve": "npx serve -s src"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/javims95/API-Stars-Wars.git"

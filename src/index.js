@@ -8,5 +8,6 @@ import { createNav } from './modules/createNav.js';
     const loader = document.getElementById('loader');
     loader.style.display = 'flex';
 
-    getDataPage('films')
+    getDataPage('people')
+
 })()
