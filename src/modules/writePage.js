@@ -1,5 +1,5 @@
 import { obtenerDatosDeAPI } from "./api.js"
-import { capitalize } from "../utils/functions.js"
+import { capitalize, getEndPointFromUrl } from "../utils/functions.js"
 import { getDataModal, hideModal } from "./modal.js"
 import { doSearch, updateSearch } from "./search.js"
 
@@ -20,10 +20,13 @@ const showDataPage = (contenido) => {
     document.querySelectorAll("[data-action='changePage']").forEach((button) => {
         button.addEventListener('click', () => {
             const url = button.getAttribute('data-url');
-            const name = url.split('/')[0]
-            getDataPage(name).then(
-                getDataModal(url)
-            )
+            getDataModal(url)
+        })
+    })
+    document.querySelectorAll("[data-action='paginator']").forEach((button) => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-url');
+            getDataPage(url)
         })
     })
 
@@ -36,17 +39,18 @@ const showDataPage = (contenido) => {
 
 export const getDataPage = async (pageName) => {
     try {
-        const { results: page } = await obtenerDatosDeAPI(pageName)
-        let content = `<h1 class="main-title">${capitalize(pageName)}</h1><div class="card-container">`
+        const { count, results: page, previous, next } = await obtenerDatosDeAPI(pageName);
+        let content = `<h1 class="main-title">${capitalize(pageName)}</h1><div class="card-container">`;
+
         for (let property of page) {
             content += `        
-            <div class="card" style="width: 45%;">
-                <div class="card-body">
-                    <h5 class="card-title">${property.name || property.title}</h5>            
-                    <ul class="list-none">`
+              <div class="card" style="width: 45%;">
+                  <div class="card-body">
+                      <h5 class="card-title">${property.name || property.title}</h5>            
+                      <ul class="list-none">`;
             for (let key in property) {
-                if (key === 'homeworld' || key === 'created' || key === 'edited' || key === 'url') {
-                    continue
+                if (key === "homeworld" || key === "created" || key === "edited" || key === "url") {
+                    continue;
                 }
                 if (Array.isArray(property[key])) {
                     if (property[key].length === 0) {
@@ -54,35 +58,52 @@ export const getDataPage = async (pageName) => {
                         continue;
                     }
                     content += `<hr/><li><strong>${capitalize(key)}:</strong> <div class="group-btn">`;
-                    const dataPromises = property[key].slice(0, 2).map((item) => {
-                        const url = item.split("/");
-                        return obtenerDatosDeAPI(`${url[4]}/${url[5]}`);
-                    });
+                    const dataPromises = property[key]
+                        .slice(0, 2)
+                        .map((item) => {
+                            const url = item.split("/");
+                            return obtenerDatosDeAPI(`${url[4]}/${url[5]}`);
+                        });
                     const allData = await Promise.all(dataPromises);
                     for (let data of allData) {
-                        const url = data.url.split('/');
+                        const url = data.url.split("/");
                         content += `<button class="btn btn-primary" data-action="changePage" data-url="${url[4]}/${url[5]}">
-                            ${data.name || data.title}
-                        </button>`;
+                              ${data.name || data.title}
+                          </button>`;
                     }
                     content += `</div></li>`;
                 } else {
-                    content += `<li><strong>${capitalize(key)}:</strong> ${property[key]}</li>`
+                    content += `<li><strong>${capitalize(key)}:</strong> ${property[key]}</li>`;
                 }
             }
-            const dataUrl = property.url.split('/');
+            const dataUrl = property.url.split("/");
             content += `</ul><hr/>
-                    <button class="btn btn-primary btn-block openModal" data-action="openModal" data-url="${dataUrl[4]}/${dataUrl[5]}">
-                        Más detalles
-                    </button>
-                </div>
-            </div>`
+                      <button class="btn btn-primary btn-block openModal" data-action="openModal" data-url="${dataUrl[4]}/${dataUrl[5]}">
+                          Más detalles
+                      </button>
+                  </div>
+              </div>`;
         }
-        content += '</div>';
-        updateSearch(pageName)
-        showDataPage(content)
+        content += "</div>";
+        content += getPagination(previous, next);
 
+        updateSearch(pageName);
+        showDataPage(content);
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
+};
+
+
+const getPagination = (previous, next) => {
+    let content = '<div class="b-pagination-outer"><ul id="border-pagination">'
+    previous
+        ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(previous)}">« Previous</a></li>`
+        : content += `<li><a class="page-link disabled">« Previous</a></li>`
+
+    next
+        ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(next)}">Next »</a></li>`
+        : content += `<li><a class="page-link disabled">Next »</a></li>`
+    content += '</ul></div>'
+    return content
 }

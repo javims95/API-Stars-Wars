@@ -1,6 +1,5 @@
 import { obtenerDatosDeAPI } from "./api.js"
 import { capitalize } from "../utils/functions.js"
-import { getDataPage } from "./writePage.js"
 
 const modal = document.getElementById('modal')
 const modalContent = document.getElementById('modalContent')
@@ -12,10 +11,7 @@ const showDataModal = (contenido) => {
     document.querySelectorAll("[data-action='changePage']").forEach((button) => {
         button.addEventListener('click', () => {
             const url = button.getAttribute('data-url');
-            const name = url.split('/')[0]
-            getDataPage(name).then(
-                getDataModal(url)
-            )
+            getDataModal(url)
         })
     })
 }
@@ -45,7 +41,6 @@ export const getDataModal = async (endpoint) => {
                 });
                 const allData = await Promise.all(dataPromises);
                 for (let data of allData) {
-                    // console.log(data);
                     const url = data.url.split('/');
                     content += `<button class="btn btn-primary" data-action="changePage" data-url="${url[4]}/${url[5]}">
                                     ${data.name || data.title}
