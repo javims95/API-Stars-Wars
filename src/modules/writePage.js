@@ -1,10 +1,11 @@
-import { obtenerDatosDeAPI } from "./api.js"
-import { capitalize, getEndPointFromUrl } from "../utils/functions.js"
+import { getDataFromAPI } from "./api.js"
+import { capitalize, getEndPointFromUrl, getTitle } from "../utils/functions.js"
 import { getDataModal, hideModal } from "./modal.js"
 import { doSearch, updateSearch } from "./search.js"
 
 const showDataPage = (contenido) => {
-    const resultados = document.getElementById('results')
+    const resultados = document.getElementById('results');
+    const buttonSearch = document.getElementById('btnSearch');
     loader.style.display = 'none'
     resultados.innerHTML = contenido
 
@@ -29,19 +30,29 @@ const showDataPage = (contenido) => {
             getDataPage(url)
         })
     })
-
+    buttonSearch.addEventListener('click', (e) => {
+        e.preventDefault();
+    })
     const inputSearch = document.getElementById('searchInput');
     inputSearch.addEventListener('input', () => {
-        doSearch(inputSearch.value)
-    });
-
+        doSearch(inputSearch.value).then(() => {
+            document.querySelectorAll("[data-action='openModalSearch']").forEach((button) => {
+                console.log(button);
+                button.addEventListener('click', () => {
+                    const url = button.getAttribute('data-url');
+                    getDataModal(url);
+                });
+            });
+        });
+    });    
 }
 
 export const getDataPage = async (pageName) => {
     try {
-        const { count, results: page, previous, next } = await obtenerDatosDeAPI(pageName);
-        let content = `<h1 class="main-title">${capitalize(pageName)}</h1><div class="card-container">`;
-
+        const { results: page, previous, next } = await getDataFromAPI(pageName);
+        let content = `<h1 class="main-title">${getTitle(pageName)}</h1>
+        ${getPagination(previous, next)}
+        <div class="card-container">`;
         for (let property of page) {
             content += `        
               <div class="card" style="width: 45%;">
@@ -62,7 +73,7 @@ export const getDataPage = async (pageName) => {
                         .slice(0, 2)
                         .map((item) => {
                             const url = item.split("/");
-                            return obtenerDatosDeAPI(`${url[4]}/${url[5]}`);
+                            return getDataFromAPI(`${url[4]}/${url[5]}`);
                         });
                     const allData = await Promise.all(dataPromises);
                     for (let data of allData) {

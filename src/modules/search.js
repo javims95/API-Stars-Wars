@@ -1,11 +1,12 @@
-import { obtenerDatosDeAPI } from "./api.js";
+import { getEndPointFromUrl, getTitle } from "../utils/functions.js";
+import { getDataFromAPI } from "./api.js";
 
 const input = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
 const searchResultsList = document.getElementById('search-results-list');
 
 export const updateSearch = (name) => {
-    input.placeholder = `Search ${name}`
+    input.placeholder = `Search ${getTitle(name)}`
     input.dataset.name = name;
 }
 
@@ -13,7 +14,7 @@ export const doSearch = async (query) => {
     if (query.length >= 3) {
         const name = input.getAttribute('data-name');
         try {
-            const response = await obtenerDatosDeAPI(`${name}/?search=${query}`);
+            const response = await getDataFromAPI(`${name}/?search=${query}`);
             const data = response.results;
             if (data.length) {
                 searchResults.style.display = 'block';
@@ -23,7 +24,8 @@ export const doSearch = async (query) => {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
                     a.textContent = data[i].name;
-                    a.href = data[i].url;
+                    a.setAttribute('data-action', 'openModalSearch')
+                    a.setAttribute('data-url', getEndPointFromUrl(data[i].url))
                     li.appendChild(a);
                     searchResultsList.appendChild(li);
                 }
@@ -33,7 +35,6 @@ export const doSearch = async (query) => {
         }
     }
 };
-
 
 const changeStyleSearch = () => {
     const button = document.getElementById('btnSearch');

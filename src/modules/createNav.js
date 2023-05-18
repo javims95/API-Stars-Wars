@@ -1,10 +1,10 @@
-import { obtenerDatosDeAPI } from "./api.js";
+import { getDataFromAPI } from "./api.js";
 import { capitalize } from "../utils/functions.js";
 import { getDataPage } from "./writePage.js";
 
 export const createNav = async () => {
     const navbar = document.querySelector('.navbar');
-    const datosAPI = await obtenerDatosDeAPI('');
+    const datosAPI = await getDataFromAPI('');
 
     const ul = document.createElement('ul');
     navbar.appendChild(ul);

@@ -12,12 +12,18 @@ import { randomNumber } from '../utils/functions.js'
  * @param {boolean} [probabilityFail=false] - Indica si la petición debe tener una probabilidad de fallo. Por defecto, es false.
  * @returns {Promise} Una promesa que devuelve los datos obtenidos de la API, o una promesa rechazada si la petición falla.
  */
-export async function obtenerDatosDeAPI(endpoint, error = false, lateRequest = false, probabilityFail = false) {
-    const cacheKey = endpoint;
+export async function getDataFromAPI(endpoint, error = false, lateRequest = false, probabilityFail = false) {
+    const cacheKey = 'cachedData';
     const cachedData = localStorage.getItem(cacheKey);
 
+    let allData = {};
+
     if (cachedData) {
-        return JSON.parse(cachedData);
+        allData = JSON.parse(cachedData);
+    }
+
+    if (endpoint in allData) {
+        return allData[endpoint];
     }
 
     if (error) {
@@ -32,7 +38,8 @@ export async function obtenerDatosDeAPI(endpoint, error = false, lateRequest = f
             await new Promise((resolve) => setTimeout(resolve, 1000))
         }
 
-        localStorage.setItem(cacheKey, JSON.stringify(data));
+        allData[endpoint] = data;
+        localStorage.setItem(cacheKey, JSON.stringify(allData));
         return data
     }
 }

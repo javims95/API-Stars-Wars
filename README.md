@@ -7,13 +7,18 @@ Esta es una aplicación web de una sola página (SPA) que consume la API públic
 Antes de comenzar a utilizar la aplicación, se deben seguir estos pasos:
 
 1. Clonar este repositorio.
-2. Instalar `serve` mediante el siguiente comando en la terminal: `npm install`
+2. Ejecutar `npm install` para instalar el servidor.
 3. En la terminal ejecutar `npm run serve` en la raíz del proyecto.
 4. Abrir un navegador web y visitar `http://localhost:3000`.
 
+# Puntos a destacar
+- Incluye un sistema de cacheo de URLs, para que se almacenen los datos de las peticiones ya realizadas.
+- Toda la APP es totalmente dinámica, de forma que si en algún momento se añaden nuevas categorías, personajes, items al menú... se verá reflejado en esta APP.
+- Se pueden configurar fallos de respuesta, peticiones que tardan más de lo normal y probabilidad de fallo. Todo está documentado en la función `getDataFromAPI` ubicada en `src\modules\api.js`.
+
 ## Requisitos generales
 
-- Crear un app web SPA con swapi.dev como capa de servicios.
+- Crear una app web SPA con swapi.dev como capa de servicios.
 - Utilizar npm y package.json
 - Utilizar únicamente https://www.npmjs.com/package/serve como servidor frontal.
 - Prescindir de builds, pre-builds, post-builds, o procesados/compilados en general.
@@ -39,4 +44,3 @@ Antes de comenzar a utilizar la aplicación, se deben seguir estos pasos:
 - Aleatoriamente, 1 de cada 10 peticiones a servicio debe tardar 1 segundo más
   de lo normal, usando la pieza descrita en el punto anterior.
 - Aleatoriamente, 1 de cada 20 peticiones a servicio debe fallar.
-- Se pueden hacer tests y seguir principios TDD, BDD, u otros al gusto.
