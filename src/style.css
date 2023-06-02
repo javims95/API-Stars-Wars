@@ -41,6 +41,10 @@ hr {
     }
 }
 
+.menu-item {
+    cursor: pointer;
+}
+
 .navbar ul {
     list-style-type: none;
     margin: 0;
@@ -362,7 +366,7 @@ hr {
     justify-content: center;
     width: 400px;
     margin: 20px auto 0;
-    z-index: 1;
+    z-index: 4;
 }
 
 .search-form input[type="text"] {
@@ -394,6 +398,7 @@ hr {
     position: absolute;
     top: 574px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    z-index: 3;
 }
 
 .search-results ul {
@@ -404,6 +409,10 @@ hr {
 
 .search-results li {
     margin: 10px 0;
+}
+
+.search-results li a {
+    cursor: pointer;
 }
 
 .search-results a {
@@ -445,7 +454,7 @@ hr {
     overflow: hidden;
     display: flex;
     position: relative;
-    z-index: -1;
+    z-index: 2;
 }
 
 #border-pagination {
