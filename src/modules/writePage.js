@@ -2,11 +2,12 @@ import { getDataFromAPI } from "./api.js"
 import { capitalize, getEndPointFromUrl, getTitle } from "../utils/functions.js"
 import { getDataModal, hideModal } from "./modal.js"
 import { doSearch, updateSearch } from "./search.js"
+import { loader } from "./loader.js"
 
 const showDataPage = (contenido) => {
     const resultados = document.getElementById('results');
     const buttonSearch = document.getElementById('btnSearch');
-    loader.style.display = 'none'
+    loader(false);
     resultados.innerHTML = contenido
 
     document.querySelectorAll("[data-action='openModal']").forEach((button) => {
@@ -49,6 +50,7 @@ const showDataPage = (contenido) => {
 
 export const getDataPage = async (pageName) => {
     try {
+        loader(true);
         const { results: page, previous, next } = await getDataFromAPI(pageName);
         let content = `<h1 class="main-title">${getTitle(pageName)}</h1>
         ${getPagination(previous, next)}
@@ -107,14 +109,18 @@ export const getDataPage = async (pageName) => {
 
 
 const getPagination = (previous, next) => {
-    let content = '<div class="b-pagination-outer"><ul id="border-pagination">'
-    previous
-        ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(previous)}">« Previous</a></li>`
-        : content += `<li><a class="page-link disabled">« Previous</a></li>`
-
-    next
-        ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(next)}">Next »</a></li>`
-        : content += `<li><a class="page-link disabled">Next »</a></li>`
-    content += '</ul></div>'
-    return content
+    if(previous !== null || next !== null) {
+        let content = '<div class="b-pagination-outer"><ul id="border-pagination">'
+        previous
+            ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(previous)}">« Previous</a></li>`
+            : content += `<li><a class="page-link disabled">« Previous</a></li>`
+    
+        next
+            ? content += `<li><a class="page-link" data-action="paginator" data-url="${getEndPointFromUrl(next)}">Next »</a></li>`
+            : content += `<li><a class="page-link disabled">Next »</a></li>`
+        content += '</ul></div>'
+        return content
+    } else {
+        return '';
+    }
 }

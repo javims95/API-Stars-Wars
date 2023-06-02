@@ -1,11 +1,12 @@
 import { getDataFromAPI } from "./api.js"
 import { capitalize } from "../utils/functions.js"
+import { modalLoader } from "./loader.js"
 
 const modal = document.getElementById('modal')
 const modalContent = document.getElementById('modalContent')
 
 const showDataModal = (contenido) => {
-    modal.style.display = 'flex'
+    modalLoader(false)
     modalContent.innerHTML = contenido;
 
     document.querySelectorAll("[data-action='changePage']").forEach((button) => {
@@ -22,6 +23,7 @@ export const hideModal = () => {
 
 export const getDataModal = async (endpoint) => {
     try {
+        modalLoader(true)
         const page = await getDataFromAPI(endpoint);
         let content = `<h1 class="modal-title">${page.name || page.title}</h1><ul>`;
         for (const [key, value] of Object.entries(page)) {

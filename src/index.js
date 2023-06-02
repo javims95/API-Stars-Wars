@@ -1,13 +1,11 @@
 import { getDataPage } from './modules/writePage.js';
 import { createNav } from './modules/createNav.js';
+import { loader } from './modules/loader.js';
 
 (function () {
     window.onload = createNav;
 
-    // Loader
-    const loader = document.getElementById('loader');
-    loader.style.display = 'flex';
+    loader(true);
 
     getDataPage('people')
-
 })()
