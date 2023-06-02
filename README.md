@@ -2,6 +2,12 @@
 
 Esta es una aplicación web de una sola página (SPA) que consume la API pública de Star Wars (SWAPI) y muestra información sobre películas, personajes, planetas, especies, naves espaciales y vehículos. La aplicación se ha desarrollado utilizando solo JavaScript y el servidor `serve`.
 
+## Ver Demo en vivo
+
+Aquí puedes ver el front creado a partir de la API `swapi.dev`: [API Star Wars](https://swapi.jamusa.es/)
+
+**Tenga en cuenta que esta APP depende de una API externa, la primera carga puede demorarse un poco**, pero tenemos un sistema de caché para las URLs, una vez cargada la primera página todo los datos son cacheados obteniendo así una velocidad de navegación muy rápida.
+
 ## Configuración
 
 Antes de comenzar a utilizar la aplicación, se deben seguir estos pasos:
